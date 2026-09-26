@@ -9,7 +9,7 @@
 #define NHD0216K3Z_LCD_LINE1_ADDRESS (0x00U)
 #define NHD0216K3Z_LCD_LINE2_ADDRESS (0x40U)
 #define NHD0216K3Z_LCD_BAR_WIDTH     (10U)
-#define NHD0216K3Z_LCD_BAR_FILLED_CHAR '#'
+#define NHD0216K3Z_LCD_BAR_FILLED_CHAR ((char)0xFF)
 #define NHD0216K3Z_LCD_BAR_EMPTY_CHAR  '-'
 
 static bool nhd0216k3z_lcd_tx(Nhd0216k3zLcd *lcd, const uint8_t *data, uint16_t size) {
@@ -52,7 +52,10 @@ bool nhd0216k3z_lcd_show_timer(Nhd0216k3zLcd *lcd, int32_t remaining_seconds, in
 
   const int32_t minutes = remaining_seconds / 60;
   const int32_t seconds = remaining_seconds % 60;
-  const uint32_t filled = (uint32_t)(((total_seconds - remaining_seconds) * (int32_t)NHD0216K3Z_LCD_BAR_WIDTH + total_seconds / 2) / total_seconds);
+
+  const int32_t elapsed_seconds = total_seconds - remaining_seconds;
+  const uint32_t percent = (uint32_t)((elapsed_seconds * 100) / total_seconds);
+  const uint32_t filled = (uint32_t)((elapsed_seconds * (int32_t)NHD0216K3Z_LCD_BAR_WIDTH) / total_seconds);
 
   if (remaining_seconds == 0) {
     snprintf(line1, sizeof(line1), "TIME UP!   %02ld:%02ld", (long)minutes, (long)seconds);
@@ -66,7 +69,7 @@ bool nhd0216k3z_lcd_show_timer(Nhd0216k3zLcd *lcd, int32_t remaining_seconds, in
     line2[i + 1U] = (i < filled) ? NHD0216K3Z_LCD_BAR_FILLED_CHAR : NHD0216K3Z_LCD_BAR_EMPTY_CHAR;
   }
   line2[11] = ']';
-  snprintf(&line2[12], sizeof(line2) - 12U, "%3lu%%", (unsigned long)((filled * 100U) / NHD0216K3Z_LCD_BAR_WIDTH));
+  snprintf(&line2[12], sizeof(line2) - 12U, "%3lu%%", (unsigned long)percent);
   line2[NHD0216K3Z_LCD_COLUMNS] = '\0';
 
   if (!nhd0216k3z_lcd_write_line(lcd, 0U, line1)) return false;
