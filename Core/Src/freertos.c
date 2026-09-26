@@ -25,7 +25,7 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-#include "lib/apps/app_lcd_timer.h"
+#include "lcd-timer.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -73,7 +73,7 @@ static void DummyTimerSenderTask(void *argument)
   for (;;)
   {
     /* Queueへ現在の秒数を送信（最新値で上書き） */
-    app_lcd_timer_submit(seconds);
+    LcdTimer_Submit(seconds);
 
     /* 1秒（1000ミリ秒）待機 */
     osDelay(1000);
@@ -100,7 +100,7 @@ void MX_FREERTOS_Init(void); /* (MISRA C 2004 rule 8.1) */
   */
 void MX_FREERTOS_Init(void) {
   /* USER CODE BEGIN Init */
-  app_lcd_timer_init();
+  LcdTimer_Init();
   /* USER CODE END Init */
 
   /* USER CODE BEGIN RTOS_MUTEX */

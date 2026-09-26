@@ -22,13 +22,13 @@ if(NOT CMAKE_BUILD_TYPE)
 endif()
 
 # Set the project name
-set(CMAKE_PROJECT_NAME f767zi_lcd-timer)
+set(CMAKE_PROJECT_NAME f767zi_lcd-timer_cpp)
 
 # Enable compile command to ease indexing with e.g. clangd
 set(CMAKE_EXPORT_COMPILE_COMMANDS TRUE)
 
 # Core project settings
-project(${CMAKE_PROJECT_NAME})
+project(${CMAKE_PROJECT_NAME}C ASM CXX)
 message("Build type: " ${CMAKE_BUILD_TYPE})
 
 # User transport and lib sources
@@ -55,11 +55,15 @@ target_link_directories(${CMAKE_PROJECT_NAME} PRIVATE
 target_sources(${CMAKE_PROJECT_NAME} PRIVATE
     # Add user sources here
     ${USER_SRCS}
+    Core/Src/lcd-timer.cpp
+    UserLibs/lcd-timer/nhd0216k3z_lcd.c
 )
 
 # Add include paths
 target_include_directories(${CMAKE_PROJECT_NAME} PRIVATE
     # Add user defined include paths
+    Core/Inc
+    UserLibs/lcd-timer
 )
 
 # Add project symbols (macros)
