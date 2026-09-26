@@ -12,11 +12,12 @@
 main branchには、制御プログラムが自作ライブラリも合わせてCoreフォルダの中で完結するようになっております。使用言語はcです。対して、別branch (feature/cpp-userlibs) は、ライブラリをUserLibsに入れております。Core/Inc/lcd-timer.hでfreertos.cから呼び出す関数を定義しており、Core/Src/lcd-timer.cppでc++によるタイマー表示クラスを定義しております。
 
 ### cubemxの設定
-- Pinout Viewでpc12がUART5_TXに設定されていることを確認（これはデフォルトで設定されているはずです）
+- Pinout Viewでpc12がUART5_TXに設定されていることを確認（これはデフォルトで設定されているはずです）<br>
   もし必要であれば、pd2をUART5_RXに設定
 - ConnectivityでUART5のModeをAsynchronousに設定
 - Parameter SettingsでBaud rateを9600bpsに変更
-- System CoreでGPIOのUARTからPC12のGPIO modeをAlternate Function Open Drainに設定（簡単にいうとハイインピーダンスになる設定で、この設定の理由は後述します）
+- System CoreでGPIOのUARTからPC12のGPIO modeをAlternate Function Open Drainに設定<br>
+（簡単にいうとハイインピーダンスになる設定で、この設定の理由は後述します）<br>
   もし必要であれば、pd2も有効化しておく
 - Middleware and Software PacksのFREERTOS選んで、Task and QueuesでTasksでAddして、NameをLCDTimerTask、PriorityをNormal、Stack sizeを512、Entry functionをStartLCDTImerTaskに設定
 
